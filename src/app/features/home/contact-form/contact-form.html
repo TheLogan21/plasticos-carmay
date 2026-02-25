@@ -138,14 +138,22 @@
             <!-- Producto -->
             <div class="form-control">
               <label class="label pb-1"
-                ><span class="label-text font-semibold text-sm">Producto de interés</span></label
+                ><span class="label-text font-semibold text-sm">Producto de interés *</span></label
               >
               <input
                 type="text"
                 formControlName="producto"
                 placeholder="Ej. Fundas para Camarón"
                 class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+                [class.input-error]="isInvalid('producto')"
               />
+              @if (isInvalid('producto')) {
+                <label class="label"
+                  ><span class="label-text-alt text-error text-xs"
+                    >Indique el producto de interés.</span
+                  ></label
+                >
+              }
             </div>
 
             <!-- Unidad Medida -->
@@ -199,7 +207,7 @@
             <button
               type="submit"
               class="btn btn-primary w-full rounded-2xl mt-6 shadow-lg shadow-primary/20"
-              [disabled]="status() === 'sending'"
+              [disabled]="status() === 'sending' || form.invalid"
             >
               @if (status() === 'sending') {
                 <span class="loading loading-spinner loading-sm"></span> Enviando...

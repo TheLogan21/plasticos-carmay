@@ -18,7 +18,7 @@ export class ContactFormComponent implements OnInit {
   form = this.fb.group({
     empresa: ['', [Validators.required, Validators.minLength(3)]],
     ciudad: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)]],
-    producto: [''],
+    producto: ['', Validators.required],
     cantidad: [null as number | null, [Validators.required, Validators.min(1)]],
     unidadMedida: ['Millares', Validators.required],
     correo: ['', [Validators.required, Validators.email]],
