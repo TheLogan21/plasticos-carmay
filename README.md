@@ -1,59 +1,76 @@
-# PlasticosCarmay
+# Plásticos Carmay - Plataforma Web Industrial
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
+## 🏭 Descripción del Proyecto
 
-## Development server
+Plásticos Carmay es una empresa líder especializada en la **extrusión, sellado e impresión** de soluciones plásticas de alta calidad. Esta plataforma digital ha sido diseñada para reflejar su capacidad industrial, su compromiso con la inocuidad alimentaria (en proceso de certificación **ISO 22000**) y para optimizar el proceso de cotización B2B.
 
-To start a local development server, run:
+## 🛠️ Stack Tecnológico
 
-```bash
-ng serve
-```
+- **Frontend:** [Angular v21+](https://angular.dev/) (Arquitectura Standalone).
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/) & [daisyUI v5](https://daisyui.com/).
+- **Estado y Reactividad:** [Angular Signals](https://angular.dev/guide/signals) para una lógica de UI moderna y eficiente.
+- **Temas:** Cambio dinámico entre modo oscuro (`night`) y modo claro (`corporate`).
+- **Backend:** [Vercel Serverless Functions](https://vercel.com/docs/functions) (Node.js).
+- **Servicio de Correo:** [Resend](https://resend.com/) para envíos transaccionales de alta confiabilidad.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 📐 Arquitectura
 
-## Code scaffolding
+El proyecto sigue una estructura **Feature-Based (Orientada a Funcionalidades)** para asegurar escalabilidad:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- `src/app/core/`: Interfaces, servicios globales (Theme, Quote) y datos estáticos.
+- `src/app/shared/`: Componentes de UI reutilizables (Tarjetas de producto, Modales).
+- `src/app/layout/`: Elementos globales de estructura (Header, Footer).
+- `src/app/features/home/`: Secciones principales de la Landing Page (Hero, Nosotros, Catálogo, Formulario).
 
-```bash
-ng generate component component-name
-```
+## ✨ Características Principales
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Hero Swiper Dinámico:** Carrusel interactivo con imágenes técnicas de maquinaria de extrusión de alta precisión.
+- **Catálogo industrial:** Explorador de categorías alimentado por una base de datos tipada.
+- **Sistema de Cotización Inteligente:** Pre-llenado automático de productos desde el catálogo hacia el formulario.
+- **UI/UX Moderna:** Diseño responsivo, efectos de glassmorphism y tipografía optimizada.
+- **Seguridad Antispam:** Implementación de Honeypot visualmente oculto en el formulario de contacto.
 
-```bash
-ng generate --help
-```
+## 🚀 Inicio Rápido
 
-## Building
+### Requisitos Previos
 
-To build the project run:
+- Node.js (Versión LTS recomendada)
+- npm o yarn
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Instalación
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Servidor de Desarrollo
 
-## Additional Resources
+```bash
+npm start
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Navega a `http://localhost:4200`.
+
+### Construcción para Producción
+
+```bash
+npm run build
+```
+
+## 🔒 Configuración de Seguridad y Backend
+
+El formulario de contacto utiliza una función Serverless ubicada en `/api/send.ts`. Para habilitar el envío de correos:
+
+1. Obtén una API Key en [Resend.com](https://resend.com).
+2. Configura la variable de entorno `RESEND_API_KEY` en tu plataforma de despliegue (Vercel/Netlify).
+3. La función está configurada para redirigir las consultas a `Aventas@plasticoscarmay.com`.
+
+## 📞 Contacto Comercial
+
+- **WhatsApp:** +593 962794119
+- **Correos:** Aventas@plasticoscarmay.com, vventas@plasticoscarmay.com
+- **Ubicación:** C. Ricardo Planas Villegas 137, Guayaquil 090610, Ecuador.
+
+---
+
+_Desarrollado con enfoque en rendimiento industrial y excelencia web._
