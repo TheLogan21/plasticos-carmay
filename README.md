@@ -109,17 +109,4 @@ Navega a `http://localhost:4200`.
 ng build
 ```
 
----
-
-## 📞 Datos de Contacto Corporativo
-
-| Canal               | Detalle                                                   |
-| ------------------- | --------------------------------------------------------- |
-| **WhatsApp ventas** | [+593 962 794 119](https://wa.me/593962794119)            |
-| **Correo ventas A** | Aventas@plasticoscarmay.com                               |
-| **Correo ventas B** | vventas@plasticoscarmay.com                               |
-| **Dirección**       | C. Ricardo Planas Villegas 137, Guayaquil 090610, Ecuador |
-
----
-
 _Desarrollado con Angular 21, Tailwind CSS v4 y daisyUI v5. Despliegue recomendado en [Vercel](https://vercel.com)._
