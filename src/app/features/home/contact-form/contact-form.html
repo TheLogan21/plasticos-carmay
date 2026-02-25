@@ -60,7 +60,7 @@
             </div>
             <div>
               <p class="font-bold text-base-content text-sm">Correos Corporativos</p>
-              <p class="text-base-content/60 text-xs mt-0.5">Aventas&#64;plasticoscarmay.com</p>
+              <p class="text-base-content/60 text-xs mt-0.5">aventas&#64;plasticoscarmay.com</p>
               <p class="text-base-content/60 text-xs">vventas&#64;plasticoscarmay.com</p>
             </div>
           </div>
@@ -181,6 +181,27 @@
                   <span class="text-sm">Kilos</span>
                 </label>
               </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="form-control">
+              <label class="label pb-1"
+                ><span class="label-text font-semibold text-sm">Teléfono de contacto *</span></label
+              >
+              <input
+                type="tel"
+                formControlName="telefono"
+                placeholder="+593 962 794 119"
+                class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+                [class.input-error]="isInvalid('telefono')"
+              />
+              @if (isInvalid('telefono')) {
+                <label class="label"
+                  ><span class="label-text-alt text-error text-xs"
+                    >Ingrese un número válido (ej. +593 962 794 119).</span
+                  ></label
+                >
+              }
             </div>
 
             <!-- Correo -->

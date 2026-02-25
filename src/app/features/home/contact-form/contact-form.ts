@@ -1,7 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { QuoteService } from '../../../core/services/quote.service';
+import { ContactService } from '../../../core/services/contact.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-contact-form',
@@ -12,21 +14,33 @@ import { QuoteService } from '../../../core/services/quote.service';
 export class ContactFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private quoteService = inject(QuoteService);
+  private contactService = inject(ContactService);
 
   readonly status = signal<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   form = this.fb.group({
-    empresa: ['', [Validators.required, Validators.minLength(3)]],
-    ciudad: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)]],
-    producto: ['', Validators.required],
+    empresa: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
+    ciudad: [
+      '',
+      [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/), Validators.maxLength(80)],
+    ],
+    producto: ['', [Validators.required, Validators.maxLength(120)]],
     cantidad: [null as number | null, [Validators.required, Validators.min(1)]],
     unidadMedida: ['Millares', Validators.required],
-    correo: ['', [Validators.required, Validators.email]],
+    telefono: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^\+?[\d\s\-\(\)]{7,20}$/),
+        Validators.maxLength(20),
+      ],
+    ],
+    correo: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
     _trap: [''], // honeypot — campo oculto anti-spam
   });
 
   ngOnInit(): void {
-    // Detectar si viene producto preseleccionado desde el modal
+    // Detectar si viene un producto preseleccionado desde el modal del catálogo
     const preselected = this.quoteService.preselectedProduct();
     if (preselected) {
       this.form.patchValue({ producto: preselected });
@@ -44,28 +58,36 @@ export class ContactFormComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
+
     // Honeypot check — si el campo _trap tiene valor, es un bot
     if (this.form.value._trap) return;
 
     this.status.set('sending');
 
     try {
-      const response = await fetch('/api/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(this.form.value),
-      });
+      const { empresa, ciudad, producto, cantidad, unidadMedida, telefono, correo } =
+        this.form.value;
 
-      if (response.ok) {
-        this.status.set('success');
-        setTimeout(() => {
-          this.status.set('idle');
-          this.form.reset({ unidadMedida: 'Millares' });
-        }, 3000);
-      } else {
-        throw new Error('Server error');
-      }
+      await this.contactService.sendQuote(
+        {
+          empresa: empresa ?? '',
+          ciudad: ciudad ?? '',
+          producto: producto ?? '',
+          cantidad: cantidad ?? 0,
+          unidadMedida: unidadMedida ?? 'Millares',
+          telefono: telefono ?? '',
+          correo: correo ?? '',
+        },
+        environment.web3FormsAccessKey,
+      );
+
+      this.status.set('success');
+      setTimeout(() => {
+        this.status.set('idle');
+        this.form.reset({ unidadMedida: 'Millares' });
+      }, 3000);
     } catch (err) {
+      console.error('[ContactForm]', err);
       this.status.set('error');
       setTimeout(() => this.status.set('idle'), 4000);
     }

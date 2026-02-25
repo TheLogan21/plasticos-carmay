@@ -8,11 +8,11 @@
   <div class="container mx-auto px-4 flex items-center justify-between">
     <!-- Logo -->
     <a href="#inicio" class="flex items-center gap-2">
-      <div
-        class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-primary-content font-black text-lg"
-      >
-        P
-      </div>
+      <img
+        src="assets/Ccarmay.png"
+        alt="Logo Plásticos Carmay"
+        class="w-9 h-9 rounded-lg object-contain"
+      />
       <span
         class="font-bold text-lg tracking-tight"
         [class.text-base-content]="isScrolled()"
@@ -37,9 +37,11 @@
         id="theme-toggle-btn"
         (click)="themeService.toggle()"
         class="btn btn-ghost btn-circle btn-sm"
-        [title]="themeService.theme() === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'"
+        [title]="
+          themeService.theme() === 'night' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'
+        "
       >
-        @if (themeService.theme() === 'dark') {
+        @if (themeService.theme() === 'night') {
           <!-- Sun icon -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +84,7 @@
         class="btn btn-ghost btn-circle btn-sm"
         [class.text-white]="!isScrolled()"
       >
-        @if (themeService.theme() === 'dark') {
+        @if (themeService.theme() === 'night') {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

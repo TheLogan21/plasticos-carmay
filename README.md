@@ -6,13 +6,13 @@ Landing page empresarial para **Plásticos Carmay**, empresa especializada en la
 
 ## 🛠️ Stack Tecnológico
 
-| Capa           | Tecnología                                                                       |
-| -------------- | -------------------------------------------------------------------------------- |
-| **Framework**  | [Angular v21+](https://angular.dev/) — Standalone Components, Signals            |
-| **Estilos**    | [Tailwind CSS v4](https://tailwindcss.com/) + [daisyUI v5](https://daisyui.com/) |
-| **Temas**      | `night` (oscuro por defecto) / `corporate` (claro)                               |
-| **Serverless** | [Vercel Functions](https://vercel.com/docs/functions) — Node.js                  |
-| **Correo**     | [Resend](https://resend.com/) — API transaccional                                |
+| Capa          | Tecnología                                                                        |
+| ------------- | --------------------------------------------------------------------------------- |
+| **Framework** | [Angular v21+](https://angular.dev/) — Standalone Components, Signals             |
+| **Estilos**   | [Tailwind CSS v4](https://tailwindcss.com/) + [daisyUI v5](https://daisyui.com/)  |
+| **Temas**     | `night` (oscuro por defecto) / `corporate` (claro)                                |
+| **Correo**    | [Web3Forms](https://web3forms.com/) — envío directo desde el cliente, sin backend |
+| **Deploy**    | [Vercel](https://vercel.com/) — build automático desde GitHub                     |
 
 ---
 
@@ -21,20 +21,29 @@ Landing page empresarial para **Plásticos Carmay**, empresa especializada en la
 El proyecto sigue una estructura **Feature-Based** (orientada a funcionalidades):
 
 ```
-src/app/
-├── core/
-│   ├── data/           → catalog.data.ts    (catálogo estático tipado)
-│   ├── interfaces/     → product.interface.ts
-│   └── services/       → theme.service.ts | quote.service.ts
-├── shared/
-│   └── ui/             → product-card | product-modal
-├── layout/             → header | footer
-└── features/
-    └── home/           → hero-swiper | about-us | catalog-grid | contact-form
+src/
+├── environments/
+│   ├── environment.ts              → variables de desarrollo (key pública de Web3Forms)
+│   └── environment.production.ts  → generado en build-time por scripts/set-env.js
+├── app/
+│   ├── core/
+│   │   ├── data/           → catalog.data.ts     (catálogo estático tipado)
+│   │   ├── interfaces/     → product.interface.ts
+│   │   └── services/       → theme.service.ts | quote.service.ts | contact.service.ts
+│   ├── shared/
+│   │   └── ui/             → product-card | product-modal
+│   ├── layout/             → header | footer
+│   └── features/
+│       └── home/           → hero-swiper | about-us | catalog-grid | contact-form
 
-api/
-└── send.ts             → Serverless function (Resend + seguridad)
+scripts/
+└── set-env.js              → pre-build: inyecta WEB3FORMS_ACCESS_KEY en environment.production.ts
+
+vercel.json                 → build command con inyección de variables de entorno
 ```
+
+> **Sin función serverless:** la migración de Resend a Web3Forms eliminó por completo la carpeta `api/`.
+> El formulario envía directamente a `https://api.web3forms.com/submit` desde el navegador.
 
 ---
 
@@ -50,35 +59,50 @@ api/
 
 ## 🔒 Seguridad del Formulario
 
-El formulario de cotización cuenta con **5 capas de protección** apiladas:
+El formulario de cotización cuenta con **5 capas de protección** apiladas en `ContactService`:
 
-| #   | Capa                       | Descripción                                                                                                                                                                    |
-| --- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | **Honeypot**               | Campo `_trap` invisible. Si un bot lo rellena, el envío se descarta silenciosamente.                                                                                           |
-| 2   | **Validación client-side** | Angular Reactive Forms con `Validators.required`, `Validators.email`, `Validators.min`, `minLength`. El botón de envío queda deshabilitado hasta que el formulario sea válido. |
-| 3   | **Validación server-side** | La función serverless valida presencia, formato de email y que la cantidad sea un número positivo.                                                                             |
-| 4   | **Límites de longitud**    | Cada campo tiene un tope máximo de caracteres (empresa ≤ 120, ciudad ≤ 80, correo ≤ 254…) para prevenir payloads masivos.                                                      |
-| 5   | **Sanitización HTML**      | Todos los inputs pasan por `escapeHtml()` antes de insertarse en la plantilla del correo, previniendo inyección de etiquetas o scripts (`XSS`).                                |
+| #   | Capa                       | Descripción                                                                                                                                                                        |
+| --- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Honeypot**               | Campo `_trap` invisible. Si un bot lo rellena, el envío se descarta silenciosamente en el componente antes de llamar al servicio.                                                  |
+| 2   | **Validación client-side** | Angular Reactive Forms con `Validators.required`, `Validators.email`, `Validators.min`, `minLength`, `maxLength`. El botón queda deshabilitado hasta que el formulario sea válido. |
+| 3   | **Validación en servicio** | `ContactService` valida presencia de todos los campos, formato de email y que la cantidad sea un número positivo — antes de hacer la petición HTTP.                                |
+| 4   | **Límites de longitud**    | Cada campo tiene un tope máximo de caracteres (empresa ≤ 120, ciudad ≤ 80, correo ≤ 254 RFC 5321…) para prevenir payloads masivos.                                                 |
+| 5   | **Sanitización HTML**      | Todos los inputs pasan por `escapeHtml()` antes de insertarse en el `subject` y los campos del correo, previniendo XSS.                                                            |
 
 ---
 
-## 📧 Configuración del Servicio de Correo (Resend)
+## 📧 Configuración del Servicio de Correo (Web3Forms)
 
-Las cotizaciones enviadas por el formulario llegan a `Aventas@plasticoscarmay.com` mediante la función serverless `api/send.ts`.
+Las cotizaciones se envían directamente desde el navegador a la API de Web3Forms, que las reenvía al correo registrado con la access key.
 
-### Requisitos para producción
+### ¿Por qué Web3Forms?
 
-1. **Verificar el dominio** `plasticoscarmay.com` en [resend.com/domains](https://resend.com/domains) añadiendo los registros DNS:
-   - `TXT` → `resend._domainkey` (DKIM)
-   - `MX` → `send` (feedback SES)
-   - `TXT` → `send` → `v=spf1 ...` (SPF)
+- **Sin backend propio**: no requiere función serverless ni dominio verificado.
+- **Sin SDK**: usa la `Fetch API` nativa del navegador con `FormData`.
+- **Access key pública**: según la [documentación oficial](https://docs.web3forms.com/), la key solo permite _enviar_ formularios; nunca expone datos de la cuenta.
 
-2. **Variables de entorno** a configurar en Vercel/Netlify:
+### Requisitos para producción (Vercel)
 
-   | Variable            | Valor                                        |
-   | ------------------- | -------------------------------------------- |
-   | `RESEND_API_KEY`    | Tu clave de API de Resend                    |
-   | `RESEND_FROM_EMAIL` | `Plásticos Carmay <web@plasticoscarmay.com>` |
+1. Crea tu access key gratuita en [web3forms.com](https://web3forms.com) con el correo destino.
+
+2. En **Vercel → Project Settings → Environment Variables**, añade:
+
+   | Variable               | Valor                      |
+   | ---------------------- | -------------------------- |
+   | `WEB3FORMS_ACCESS_KEY` | Tu access key de Web3Forms |
+
+3. El script `scripts/set-env.js` la inyecta automáticamente en `environment.production.ts` antes del build de Angular.
+
+### Desarrollo local
+
+La key se guarda en `src/environments/environment.ts` (no en `.env`) ya que es una clave de solo-escritura segura para el cliente:
+
+```typescript
+export const environment = {
+  production: false,
+  web3FormsAccessKey: 'TU_ACCESS_KEY',
+};
+```
 
 ---
 
@@ -103,10 +127,17 @@ ng serve
 
 Navega a `http://localhost:4200`.
 
-### Build de producción
+### Build de producción (igual que Vercel)
 
 ```bash
-ng build
+# 1. Inyectar la key desde la variable de entorno del sistema
+$env:WEB3FORMS_ACCESS_KEY="tu-access-key"   # PowerShell
+# export WEB3FORMS_ACCESS_KEY="tu-access-key"  # bash / zsh
+
+# 2. Generar environment.production.ts e iniciar el build
+node scripts/set-env.js && ng build --configuration production
 ```
+
+---
 
 _Desarrollado con Angular 21, Tailwind CSS v4 y daisyUI v5. Despliegue recomendado en [Vercel](https://vercel.com)._
