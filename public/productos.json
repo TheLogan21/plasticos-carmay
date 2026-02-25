@@ -1,0 +1,54 @@
+[
+  {
+    "id": "camaronero",
+    "category": "Sector Camaronero / Alimenticio",
+    "description": "Soluciones de empaque para la industria alimentaria con estándares de inocuidad ISO 22000.",
+    "image": "public/assets/pañal.png",
+    "products": [
+      {
+        "name": "Fundas para Camarón",
+        "details": "Con Impresión, Sin Impresión, Pigmentadas, Pañales, Mandiles, Con Fuelle. Medidas a convenir."
+      },
+      {
+        "name": "Fundas para Alimentos (Rollos)",
+        "details": "Diferentes colores a elección, medidas a convenir para procesos industriales."
+      },
+      {
+        "name": "Fundas para Hielo",
+        "details": "Pequeña (6x15), Mediana (10x18), Grande (12x22), Jumbo (14x23.5)."
+      }
+    ]
+  },
+  {
+    "id": "comercial",
+    "category": "Sector Comercial / Uso General",
+    "description": "Bolsas resistentes y versátiles para todo tipo de negocio minorista y general.",
+    "image": "https://images.unsplash.com/photo-1605648916361-9bc12ad6a569?q=80&w=800&auto=format&fit=crop",
+    "products": [
+      {
+        "name": "Fundas Tipo Camiseta",
+        "details": "Pequeña (6x15), Mediana (10x18), Grande (12x22), Jumbo (14x23.5)."
+      },
+      {
+        "name": "Fundas Tipo Boutique",
+        "details": "Pequeña (6x15), Mediana (10x18), Grande (12x22), Jumbo (14x23.5). Acabado premium."
+      }
+    ]
+  },
+  {
+    "id": "industrial",
+    "category": "Sector Industrial y Especializado",
+    "description": "Empaques técnicos para gestión de residuos y agricultura especializada.",
+    "image": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop",
+    "products": [
+      {
+        "name": "Fundas para Basura",
+        "details": "Mega Industrial (38x55), Super Industrial (36x40), Industrial (30x36), Multiuso (18x22). Incluye opción MOPELIGROEK para bioseguridad."
+      },
+      {
+        "name": "Fundas para Vivero",
+        "details": "Con Perforaciones, Sin Perforación. Medidas: 3x10, 5x20, 12x22, 14x23.5."
+      }
+    ]
+  }
+]

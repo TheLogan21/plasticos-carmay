@@ -1,0 +1,75 @@
+<dialog #dialog class="modal">
+  @if (product()) {
+    <div class="modal-box max-w-2xl p-0 rounded-3xl overflow-hidden bg-base-100">
+      <!-- Image Header -->
+      <div class="relative h-56">
+        <img
+          [src]="product()!.imageSrc"
+          [alt]="product()!.category"
+          class="w-full h-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent flex items-end p-6"
+        >
+          <h3 class="text-2xl font-bold text-white">{{ product()!.category }}</h3>
+        </div>
+        <button
+          (click)="close()"
+          class="absolute top-4 right-4 btn btn-circle btn-sm bg-black/30 backdrop-blur-sm border-none text-white hover:bg-black/50"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-7">
+        <p class="text-base-content/70 text-sm mb-7 leading-relaxed">
+          {{ product()!.description }}
+        </p>
+
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-1 h-5 rounded-full bg-primary block"></span>
+          <h4 class="font-bold text-base-content">Líneas de Producto</h4>
+        </div>
+
+        <div class="space-y-4">
+          @for (item of product()!.products; track item.name; let i = $index) {
+            <div class="rounded-2xl border border-base-300 bg-base-200 p-4">
+              <div class="flex items-start gap-3">
+                <div class="badge badge-primary badge-sm mt-0.5 shrink-0">{{ i + 1 }}</div>
+                <div class="flex-1 min-w-0">
+                  <h5 class="font-bold text-base-content text-sm">{{ item.name }}</h5>
+                  <p class="text-xs text-base-content/60 mt-1">{{ item.details }}</p>
+                  @if (item.measurements && item.measurements.length > 0) {
+                    <div class="flex flex-wrap gap-1 mt-2">
+                      @for (m of item.measurements; track m) {
+                        <span class="badge badge-outline badge-xs">{{ m }}</span>
+                      }
+                    </div>
+                  }
+                  <button
+                    (click)="requestQuote(item.name)"
+                    class="text-primary text-xs font-bold mt-2 hover:underline"
+                  >
+                    Solicitar cotización →
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-action mt-7">
+          <button class="btn btn-primary w-full rounded-2xl" (click)="requestQuote()">
+            Cotizar todo este sector
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backdrop -->
+    <form method="dialog" class="modal-backdrop bg-black/60 backdrop-blur-sm">
+      <button (click)="close()">cerrar</button>
+    </form>
+  }
+</dialog>

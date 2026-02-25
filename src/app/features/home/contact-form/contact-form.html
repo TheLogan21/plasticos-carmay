@@ -1,0 +1,227 @@
+<section id="cotizar" class="py-24 bg-base-100">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+      <!-- Info Column -->
+      <div class="pt-4">
+        <p class="text-primary font-bold text-xs tracking-widest uppercase mb-3">
+          Contacto Directo
+        </p>
+        <h2 class="text-5xl font-bold text-base-content leading-tight mb-6">
+          Solicite su<br /><span class="text-primary italic">Cotización</span>
+        </h2>
+        <p class="text-base-content/60 text-sm leading-relaxed mb-10">
+          Nuestro equipo de ventas atenderá su solicitud y responderá en menos de 24 horas
+          laborables con la mejor propuesta.
+        </p>
+
+        <div class="space-y-5">
+          <a href="https://wa.me/593962794119" class="flex items-center gap-4 group">
+            <div
+              class="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center text-success shrink-0 group-hover:bg-success group-hover:text-white transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+                />
+                <path
+                  d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.5l5.788-1.517A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.81 9.81 0 0 1-5.003-1.367l-.359-.213-3.716.974 1-3.617-.234-.37A9.825 9.825 0 0 1 2.182 12C2.182 6.579 6.579 2.182 12 2.182c5.42 0 9.818 4.397 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-base-content text-sm">WhatsApp de Ventas</p>
+              <p class="text-base-content/60 text-sm">+593 962 794 119</p>
+            </div>
+          </a>
+
+          <div class="flex items-start gap-4">
+            <div
+              class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-base-content text-sm">Correos Corporativos</p>
+              <p class="text-base-content/60 text-xs mt-0.5">Aventas&#64;plasticoscarmay.com</p>
+              <p class="text-base-content/60 text-xs">vventas&#64;plasticoscarmay.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card bg-base-200 shadow-xl rounded-3xl border border-base-300">
+        <div class="card-body p-8 lg:p-10">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="space-y-5">
+            <!-- Honeypot - oculto visualmente para humanos, trampa para bots -->
+            <div class="hidden" aria-hidden="true">
+              <input type="text" formControlName="_trap" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <!-- Empresa -->
+            <div class="form-control">
+              <label class="label pb-1"
+                ><span class="label-text font-semibold text-sm">Empresa / Contacto *</span></label
+              >
+              <input
+                type="text"
+                formControlName="empresa"
+                placeholder="Ej. Exportadora Mar Azul S.A."
+                class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+                [class.input-error]="isInvalid('empresa')"
+              />
+              @if (isInvalid('empresa')) {
+                <label class="label"
+                  ><span class="label-text-alt text-error text-xs"
+                    >Mínimo 3 caracteres requeridos.</span
+                  ></label
+                >
+              }
+            </div>
+
+            <!-- Ciudad + Cantidad -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form-control">
+                <label class="label pb-1"
+                  ><span class="label-text font-semibold text-sm">Ciudad *</span></label
+                >
+                <input
+                  type="text"
+                  formControlName="ciudad"
+                  placeholder="Guayaquil"
+                  class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+                  [class.input-error]="isInvalid('ciudad')"
+                />
+                @if (isInvalid('ciudad')) {
+                  <label class="label"
+                    ><span class="label-text-alt text-error text-xs">Solo letras.</span></label
+                  >
+                }
+              </div>
+              <div class="form-control">
+                <label class="label pb-1"
+                  ><span class="label-text font-semibold text-sm">Cantidad *</span></label
+                >
+                <input
+                  type="number"
+                  formControlName="cantidad"
+                  placeholder="500"
+                  class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+                  [class.input-error]="isInvalid('cantidad')"
+                />
+                @if (isInvalid('cantidad')) {
+                  <label class="label"
+                    ><span class="label-text-alt text-error text-xs">Mínimo 1.</span></label
+                  >
+                }
+              </div>
+            </div>
+
+            <!-- Producto -->
+            <div class="form-control">
+              <label class="label pb-1"
+                ><span class="label-text font-semibold text-sm">Producto de interés</span></label
+              >
+              <input
+                type="text"
+                formControlName="producto"
+                placeholder="Ej. Fundas para Camarón"
+                class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+              />
+            </div>
+
+            <!-- Unidad Medida -->
+            <div class="form-control">
+              <label class="label pb-1"
+                ><span class="label-text font-semibold text-sm">Unidad de medida *</span></label
+              >
+              <div class="flex gap-6">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    formControlName="unidadMedida"
+                    value="Millares"
+                    class="radio radio-primary radio-sm"
+                  />
+                  <span class="text-sm">Millares</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    formControlName="unidadMedida"
+                    value="Kilos"
+                    class="radio radio-primary radio-sm"
+                  />
+                  <span class="text-sm">Kilos</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Correo -->
+            <div class="form-control">
+              <label class="label pb-1"
+                ><span class="label-text font-semibold text-sm">Correo electrónico *</span></label
+              >
+              <input
+                type="email"
+                formControlName="correo"
+                placeholder="contacto@empresa.com"
+                class="input rounded-xl bg-base-100 border-base-300 focus:border-primary text-sm"
+                [class.input-error]="isInvalid('correo')"
+              />
+              @if (isInvalid('correo')) {
+                <label class="label"
+                  ><span class="label-text-alt text-error text-xs"
+                    >Ingrese un correo válido.</span
+                  ></label
+                >
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-full rounded-2xl mt-6 shadow-lg shadow-primary/20"
+              [disabled]="status() === 'sending'"
+            >
+              @if (status() === 'sending') {
+                <span class="loading loading-spinner loading-sm"></span> Enviando...
+              } @else if (status() === 'success') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+                ¡Solicitud recibida!
+              } @else {
+                Enviar Solicitud de Cotización
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

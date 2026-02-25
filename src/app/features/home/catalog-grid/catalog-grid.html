@@ -1,0 +1,23 @@
+<section id="catalogo" class="py-24 bg-base-200">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+      <div>
+        <p class="text-primary font-bold text-xs tracking-widest uppercase mb-2">Portafolio</p>
+        <h2 class="text-4xl font-bold text-base-content">Catálogo de Productos</h2>
+      </div>
+      <p class="text-base-content/60 text-sm max-w-xs">
+        Haga clic en una categoría para ver las especificaciones técnicas completas y solicitar una
+        medida.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (category of categories; track category.id) {
+        <app-product-card [category]="category" (selected)="openModal($event)" />
+      }
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <app-product-modal #productModal [product]="selectedCategory()" (closed)="onModalClosed()" />
+</section>
